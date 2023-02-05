@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/shant3r/product-api/db"
+	"github.com/shant3r/product-api/internal/db"
 	)
 
 type Handler struct {

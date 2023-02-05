@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/shant3r/product-api/internal/db"
+	"github.com/shant3r/product-api/internal/api"
 )
 
 const (
@@ -39,8 +41,8 @@ func main() {
 
 	repository := db.New(database)
 
-	h := handler.New(repository)
-	
+	h := api.New(repository)
+
 	r.GET("/products", func(c *gin.Context) { h.GetProducts(ctx, c) })
 	r.POST("/products", func(c *gin.Context) { h.AddProduct(ctx, c) })
 

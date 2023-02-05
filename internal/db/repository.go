@@ -63,3 +63,13 @@ func (r *Repository) GetProducts(ctx context.Context) ([]*Product, error) {
 
 	return result, nil
 }
+
+func (r *Repository) GetProduct(id int64) (*Product, bool) {
+	for _, product := range r.products {
+		if id == product.ID {
+			return product, true
+		}
+
+	}
+	return nil, false
+}
