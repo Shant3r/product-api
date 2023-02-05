@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/shant3r/product-api/internal/db"
 	"github.com/shant3r/product-api/internal/api"
+	"github.com/shant3r/product-api/internal/db"
 )
 
 const (
