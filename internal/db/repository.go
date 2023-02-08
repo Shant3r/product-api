@@ -18,6 +18,8 @@ func New(database *sql.DB) *Repository {
 		database: database,
 	}
 }
+
+
 func (r *Repository) AddProduct(ctx context.Context, title string, description string) error {
 	if title == "" {
 		return errors.New("title is empty")
@@ -33,7 +35,6 @@ func (r *Repository) AddProduct(ctx context.Context, title string, description s
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 

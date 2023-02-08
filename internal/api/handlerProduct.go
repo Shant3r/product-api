@@ -16,6 +16,7 @@ type Handler struct {
 func New(repository *db.Repository) *Handler {
 	return &Handler{repo: repository}
 }
+
 func (h *Handler) AddProduct(ctx context.Context, c *gin.Context) {
 	req := new(AddProductRequest)
 	err := c.BindJSON(req)
@@ -37,6 +38,7 @@ func (h *Handler) AddProduct(ctx context.Context, c *gin.Context) {
 		return
 	}
 }
+
 
 // func (h *Handler) GetProducts(ctx context.Context, c *gin.Context) {
 // 	idString := c.Request.URL.Query().Get("id")
