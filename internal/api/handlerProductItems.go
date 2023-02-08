@@ -29,7 +29,7 @@ func (h *HandlerItem) AddProductItem(ctx context.Context, c *gin.Context) {
 		return
 	}
 
-	reqSku, err := uuid.NewV4()
+	reqSku:= uuid.NewV4()
 
 	err = h.repo.AddProductItem(ctx, reqItem.Material, reqSku)
 	if err != nil {
