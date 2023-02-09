@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"github.com/shant3r/product-api/internal/db"
 )
 
@@ -39,6 +40,31 @@ func (h *Handler) AddProduct(ctx context.Context, c *gin.Context) {
 	}
 }
 
+func (h *Handler) AddProductItem(ctx context.Context, c *gin.Context) {
+	req := new(AddProductItemRequest)
+	err := c.BindJSON(req)
+	if err != nil {
+		internalError(c, err)
+		return
+	}
+
+	if req.Material == "" {
+		badRequest(c)
+		return
+	}
+	if req.ProductID <= 0 {
+		badRequest(c)
+		return
+	}
+
+	reqSku := uuid.NewV4()
+
+	err = h.repo.AddProductItem(ctx, reqSku.String(), req.Material, req.ProductID)
+	if err != nil {
+		internalError(c, err)
+		return
+	}
+}
 
 // func (h *Handler) GetProducts(ctx context.Context, c *gin.Context) {
 // 	idString := c.Request.URL.Query().Get("id")

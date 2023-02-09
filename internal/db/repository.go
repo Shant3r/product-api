@@ -6,19 +6,15 @@ import (
 	"errors"
 )
 
-
 type Repository struct {
-	products []*Product
 	database *sql.DB
 }
 
 func New(database *sql.DB) *Repository {
 	return &Repository{
-		products: []*Product{},
 		database: database,
 	}
 }
-
 
 func (r *Repository) AddProduct(ctx context.Context, title string, description string) error {
 	if title == "" {
@@ -27,7 +23,7 @@ func (r *Repository) AddProduct(ctx context.Context, title string, description s
 	if description == "" {
 		return errors.New("description is empty")
 	}
-	
+
 	_, err := r.database.ExecContext(ctx, `
 		insert into product (title, description)
 		values ($1, $2)
@@ -35,6 +31,22 @@ func (r *Repository) AddProduct(ctx context.Context, title string, description s
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (r *Repository) AddProductItem(ctx context.Context, sku string, material string, productID int64) error {
+
+	if material == "" {
+		return errors.New("material is empty")
+	}
+	_, err := r.database.ExecContext(ctx, `
+	insert into product_item (sku, material, product_id)
+	values ($1, $2, $3)
+`, sku, material, productID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
