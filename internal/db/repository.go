@@ -39,6 +39,7 @@ func (r *Repository) AddProductItem(ctx context.Context, sku string, material st
 	if material == "" {
 		return errors.New("material is empty")
 	}
+
 	_, err := r.database.ExecContext(ctx, `
 	insert into product_item (sku, material, product_id)
 	values ($1, $2, $3)
