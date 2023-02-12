@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
+	
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github.com/shant3r/product-api/internal/db"
@@ -71,7 +71,7 @@ func (h *Handler) AddProductItem(ctx context.Context, c *gin.Context) {
 // 	if idString != "" {
 // 		id, err := strconv.ParseInt(idString, 10, 64)
 // 		if err != nil {
-// 			badRequst(c)
+// 			badRequst(c) 
 // 			return
 // 		}
 // 		product, ok := h.getProduct(id)
