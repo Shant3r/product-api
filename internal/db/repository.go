@@ -39,11 +39,24 @@ func (r *Repository) AddProductItem(ctx context.Context, sku string, material st
 	if material == "" {
 		return errors.New("material is empty")
 	}
-	err := r.database.QueryRowContext(ctx, "SELECT id FROM product WHERE id = $1", productID).Scan(&productID)
+	var res int64
+	err := r.database.QueryRowContext(ctx, "SELECT id FROM product WHERE id = $1", productID).Scan(&res)
 	if err != nil {
-		return errors.New("bad request: Product with this ID does not exist in the database")
+		if err == sql.ErrNoRows {
+			return ErrProductNotFound
+		}
+		return err
 	}
-
+	// var res int64
+	// err := r.database.QueryRowContext(ctx, "SELECT id FROM product WHERE id = $1", productID).Scan(&res)
+	// if err != nil {
+	// 	if err == sql.ErrNoRows {
+	// 		return &ErrNotFound{
+	// 		messange: "product not found",
+	// 		}
+	// 	}
+	// 	return err
+	// }
 	_, err = r.database.ExecContext(ctx, `
 	insert into product_item (sku, material, product_id)
 	values ($1, $2, $3)
