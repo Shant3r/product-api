@@ -47,16 +47,6 @@ func (r *Repository) AddProductItem(ctx context.Context, sku string, material st
 		}
 		return err
 	}
-	// var res int64
-	// err := r.database.QueryRowContext(ctx, "SELECT id FROM product WHERE id = $1", productID).Scan(&res)
-	// if err != nil {
-	// 	if err == sql.ErrNoRows {
-	// 		return &ErrNotFound{
-	// 		messange: "product not found",
-	// 		}
-	// 	}
-	// 	return err
-	// }
 	_, err = r.database.ExecContext(ctx, `
 	insert into product_item (sku, material, product_id)
 	values ($1, $2, $3)
@@ -65,6 +55,24 @@ func (r *Repository) AddProductItem(ctx context.Context, sku string, material st
 		return err
 	}
 
+	return nil
+}
+func (r *Repository) AddProductPrice(ctx context.Context, productID int64, price int64) error {
+	var res int64
+	err := r.database.QueryRowContext(ctx, "SELECT id FROM product WHERE id = $1", productID).Scan(&res)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return ErrProductNotFound
+		}
+		return err
+	}
+	_, err = r.database.ExecContext(ctx, `
+	insert into product_price (product_id, price)
+	values ($1, $2)
+`, productID, price)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

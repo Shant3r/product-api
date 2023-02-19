@@ -60,18 +60,30 @@ func (h *Handler) AddProductItem(ctx context.Context, c *gin.Context) {
 	reqSku := uuid.NewV4()
 
 	err = h.repo.AddProductItem(ctx, reqSku.String(), req.Material, req.ProductID)
+	if err == db.ErrProductNotFound {
+		badRequest(c)
+		return
+	}
+}
+
+func (h *Handler) AddProductPrice(ctx context.Context, c *gin.Context) {
+	req := new(AddProductPriceRequest)
+	err := c.BindJSON(req)
 	if err != nil {
-		_,ok := err.(*db.ErrNotFound)
-		if ok {
-			badRequest(c)
-			return
-		}
-		
-		if err == db.ErrProductNotFound {
-			badRequest(c)
-			return
-		}
 		internalError(c, err)
+		return
+	}
+	if req.ProductID <= 0 {
+		badRequest(c)
+		return
+	}
+	if req.Price <= 0 {
+		badRequest(c)
+		return
+	}
+	err = h.repo.AddProductPrice(ctx, req.ProductID, req.Price)
+	if err == db.ErrProductNotFound {
+		badRequest(c)
 		return
 	}
 }

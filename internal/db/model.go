@@ -16,11 +16,3 @@ type ProductItem struct {
 }
 
 var ErrProductNotFound = errors.New("product not found")
-
-type ErrNotFound struct {
-	messange string
-}
-
-func (e *ErrNotFound) Error() string {
-	return e.messange
-}
